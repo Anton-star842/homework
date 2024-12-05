@@ -1,0 +1,32 @@
+# 5 Завдання
+from urllib.parse import urlencode
+
+class UrlCreator:
+    def __init__(self, scheme, authority):
+      
+        self.scheme = scheme
+        self.authority = authority
+        self.path = []
+        self.query_params = {}
+
+    def __getattr__(self, name):
+       
+        self.path.append(name)
+        return self
+
+    def __call__(self, *args, **kwargs):
+       
+        self.path.extend(args)
+        self.query_params.update(kwargs)
+        return self
+
+    def _create(self):
+      
+        path = '/'.join(map(str, self.path))  
+        query = f"?{urlencode(self.query_params)}" if self.query_params else ""
+        return f"{self.scheme}://{self.authority}/{path}{query}"
+
+
+url_creator = UrlCreator("https", "example.com")
+url = url_creator.api.v1.users(123)("edit", action="update", lang="uk")._create()
+print(url)
