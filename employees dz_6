@@ -1,0 +1,10 @@
+CREATE TABLE "employees" (
+    "id" BigInt GENERATED ALWAYS AS IDENTITY,
+
+	"name" Character Varying NOT NULL,
+	"surname" Character Varying NOT NULL,
+    "position" Character Varying NOT NULL,
+
+
+    CONSTRAINT "unique_employees_id" UNIQUE("id")
+);
