@@ -1,51 +1,30 @@
-CREATE TABLE Users (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    email VARCHAR(255) NOT NULL UNIQUE,
-    password VARCHAR(255) NOT NULL,
-    first_name VARCHAR(100) NOT NULL,
-    last_name VARCHAR(100) NOT NULL,
-    dog_name VARCHAR(100),
-    photo BLOB
-);
+INSERT INTO Users (Id, Email, Password, FirstName, LastName, DogName, PhotoUrl)
+VALUES 
+    (1, 'antonmushtin900@gmail.com', 'пароль', 'Anton', 'Mushtyn', 'Dexter', NULL);
 
-CREATE TABLE Courses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    teacher_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    FOREIGN KEY (teacher_id) REFERENCES Users(id)
-);
+INSERT INTO Users (Id, Email, Password, FirstName, LastName, DogName, PhotoUrl)
+VALUES 
+    (2, 'ihor.harahatiy@lms.com', 'securepass', 'Ihor', 'Harahatiy', NULL, NULL);
 
-CREATE TABLE Course_Students (
-    course_id INT NOT NULL,
-    student_id INT NOT NULL,
-    PRIMARY KEY (course_id, student_id),
-    FOREIGN KEY (course_id) REFERENCES Courses(id),
-    FOREIGN KEY (student_id) REFERENCES Users(id)
-);
+INSERT INTO Courses (Id, TeacherId, Name, Description)
+VALUES 
+    (1, 2, 'robot_dream', 'Курс про створення LMS для роботи з базами даних.');
 
-CREATE TABLE Lessons (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    course_id INT NOT NULL,
-    name VARCHAR(255) NOT NULL,
-    description TEXT,
-    FOREIGN KEY (course_id) REFERENCES Courses(id)
-);
+INSERT INTO Course_Students (CourseId, StudentId)
+VALUES 
+    (1, 1);
 
-CREATE TABLE Assignments (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    course_id INT NOT NULL,
-    description TEXT,
-    max_grade INT NOT NULL,
-    FOREIGN KEY (course_id) REFERENCES Courses(id)
-);
+INSERT INTO Lessons (Id, CourseId, Name, Description)
+VALUES 
+    (1, 1, 'LMS', 'Вступ до баз даних. Посилання на заняття: https://lms.robotdreams.cc/course/2169/lesson/39429');
+INSERT INTO Lessons (Id, CourseId, Name, Description)
+VALUES 
+    (1, 1, 'LMS', 'Вступ до баз даних. Посилання на заняття: https://lms.robotdreams.cc/course/2169/lesson/39429');
 
-CREATE TABLE Assignment_Responses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    assignment_id INT NOT NULL,
-    student_id INT NOT NULL,
-    response TEXT,
-    grade INT,
-    FOREIGN KEY (assignment_id) REFERENCES Assignments(id),
-    FOREIGN KEY (student_id) REFERENCES Users(id)
-);
+INSERT INTO Homework (Id, CourseId, Description, MaxGrade)
+VALUES 
+    (1, 1, 'Вступ до баз даних. Виконати завдання з розробки LMS.', 6);
+
+INSERT INTO Homework_Answers (Id, HomeworkId, Description, StudentId, Grade)
+VALUES 
+    (1, 1, 'Відповідь на завдання доступна за посиланням: https://lms.robotdreams.cc/course/2169/lesson/39429', 1, 5);
