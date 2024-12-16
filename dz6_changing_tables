@@ -1,0 +1,21 @@
+ALTER TABLE Users
+ADD PhoneNumber VARCHAR(20);
+
+ALTER TABLE Users
+DROP COLUMN DogName;
+
+CREATE TABLE Homework_Grades (
+    Id INT PRIMARY KEY AUTO_INCREMENT,       
+    HomeworkAnswerId INT NOT NULL,       
+    GradeDate DATE NOT NULL,                 
+    Grade INT NOT NULL,                     
+    TeacherId INT NOT NULL,                 
+    FOREIGN KEY (HomeworkAnswerId) REFERENCES Homework_Answers(Id), 
+    FOREIGN KEY (TeacherId) REFERENCES Users(Id) 
+);
+
+ALTER TABLE Homework
+ADD Deadline DATE;
+
+ALTER TABLE Homework_Answers
+ADD SubmissionDate DATE;
