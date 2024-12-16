@@ -1,133 +1,121 @@
-from flask import Flask, request, jsonify
-from flask_sqlalchemy import SQLAlchemy
+const express = require('express');
+const mysql = require('mysql2');
+const bodyParser = require('body-parser');
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///lms.db'  
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+const app = express();
 
-db = SQLAlchemy(app)
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(255), unique=True, nullable=False)
-    password = db.Column(db.String(255), nullable=False)
-    first_name = db.Column(db.String(255), nullable=False)
-    last_name = db.Column(db.String(255), nullable=False)
+const db = mysql.createConnection({
+  host: 'localhost',
+  user: 'root',  
+  password: 'example',  
+  database: 'PostgreSQL' 
+});
 
+db.connect((err) => {
+  if (err) {
+    console.error('Помилка з’єднання з базою даних: ', err.stack);
+    return;
+  }
+  console.log('Успішне з’єднання з базою даних');
+});
 
-class Course(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    teacher_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+app.route('/register')
+  .get((req, res) => {
+    res.send(`
+      <h2>Реєстрація</h2>
+      <form action="/register" method="POST">
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Пароль" required><br>
+        <input type="text" name="firstName" placeholder="Ім'я" required><br>
+        <input type="text" name="lastName" placeholder="Призвище" required><br>
+        <button type="submit">Зареєструватися</button>
+      </form>
+    `);
+  })
+  .post((req, res) => {
+    const { email, password, firstName, lastName } = req.body;
 
-
-class CourseStudent(db.Model):
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), primary_key=True)
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)
-
-
-class Session(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    name = db.Column(db.String(255), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-
-
-class Assignment(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer, db.ForeignKey('course.id'), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    max_grade = db.Column(db.Integer, nullable=False)
-
-
-class AssignmentAnswer(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    assignment_id = db.Column(db.Integer, db.ForeignKey('assignment.id'), nullable=False)
-    student_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    description = db.Column(db.Text, nullable=False)
-    grade = db.Column(db.Integer)
-
-
-@app.before_first_request
-def seed_data():
-    db.create_all()
+    const query = 'INSERT INTO Users (Email, Password, FirstName, LastName) VALUES (?, ?, ?, ?)';
+    
+    db.query(query, [email, password, firstName, lastName], (err, result) => {
+      if (err) {
+        res.status(500).send('Помилка при реєстрації');
+        return;
+      }
+      res.send('Успішна реєстрація');
+    });
+  });
 
 
-    teacher = User(email="ihor.harahatyi@lms.com", password="securepass", first_name="Ihor", last_name="Harahatyi")
-    student = User(email="anton.mushtyn@lms.com", password="password", first_name="Anton", last_name="Mushtyn")
-    db.session.add_all([teacher, student])
-    db.session.commit()
+app.get('/users', (req, res) => {
+  const query = 'SELECT * FROM Users';
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).send('Помилка при отриманні даних користувачів');
+      return;
+    }
+    res.json(results);  
+  });
+});
 
 
-    course = Course(name="robot_dreams", description="Розширений курс з вивчення Python.", teacher_id=teacher.id)
-    db.session.add(course)
-    db.session.commit()
+app.get('/courses', (req, res) => {
+  const query = 'SELECT * FROM Courses';
+  db.query(query, (err, results) => {
+    if (err) {
+      res.status(500).send('Помилка при отриманні даних курсів');
+      return;
+    }
+    res.json(results);  
+  });
+});
+
+(GET та POST /courses/create)
+app.route('/courses/create')
+  .get((req, res) => {
+    res.send(`
+      <h2>Створити курс</h2>
+      <form action="/courses/create" method="POST">
+        <input type="text" name="name" placeholder="Назва курсу" required><br>
+        <input type="text" name="teacherId" placeholder="ID викладача" required><br>
+        <input type="text" name="studentIds" placeholder="ID студентів (через кому)" required><br>
+        <button type="submit">Створити курс</button>
+      </form>
+    `);
+  })
+  .post((req, res) => {
+    const { name, teacherId, studentIds } = req.body;
+    const studentsArray = studentIds.split(',').map(id => id.trim());
+
+    const query = 'INSERT INTO Courses (Name, TeacherId) VALUES (?, ?)';
+    
+    db.query(query, [name, teacherId], (err, result) => {
+      if (err) {
+        res.status(500).send('Помилка при створенні курсу');
+        return;
+      }
+
+      const courseId = result.insertId;  // Отримуємо ID створеного курсу
+      const studentQuery = 'INSERT INTO Course_Students (CourseId, StudentId) VALUES ?';
+      
+
+      const studentValues = studentsArray.map(studentId => [courseId, studentId]);
+      
+      db.query(studentQuery, [studentValues], (err) => {
+        if (err) {
+          res.status(500).send('Помилка при додаванні студентів до курсу');
+          return;
+        }
+        res.send('Курс успішно створено');
+      });
+    });
+  });
 
 
-    course_student = CourseStudent(course_id=course.id, student_id=student.id)
-    db.session.add(course_student)
-
-   
-    session = Session(course_id=course.id, name="Асинхронність у Python", description="Поглиблене вивчення асинхронності.")
-    db.session.add(session)
-
-   
-    assignment = Assignment(course_id=course.id, description="SQL запити", max_grade=100)
-    db.session.add(assignment)
-
-
-    assignment_answer = AssignmentAnswer(assignment_id=assignment.id, student_id=student.id, description="https://lms.robotdreams.cc/course/2169/lesson/39432/homework/21894", grade=90)
-    db.session.add(assignment_answer)
-
-    db.session.commit()
-
-
-@app.route('/courses/<int:course_id>', methods=['GET'])
-def course_details(course_id):
-    course = Course.query.get(course_id)
-    if not course:
-        return jsonify({'message': 'Course not found'}), 404
-
-    students = db.session.query(User).join(CourseStudent).filter(CourseStudent.course_id == course_id).all()
-    sessions = Session.query.filter_by(course_id=course_id).all()
-    assignments = Assignment.query.filter_by(course_id=course_id).all()
-
-    return jsonify({
-        'id': course.id,
-        'name': course.name,
-        'description': course.description,
-        'teacher': f"{User.query.get(course.teacher_id).first_name} {User.query.get(course.teacher_id).last_name}",
-        'students': [{'id': student.id, 'name': f"{student.first_name} {student.last_name}"} for student in students],
-        'sessions': [{'id': session.id, 'name': session.name, 'description': session.description} for session in sessions],
-        'assignments': [{'id': assignment.id, 'description': assignment.description, 'max_grade': assignment.max_grade} for assignment in assignments]
-    })
-
-
-@app.route('/courses/<int:course_id>/rating', methods=['GET'])
-def course_rating(course_id):
-    query = results = db.session.execute(query, {'course_id': course_id}).fetchall()
-    return jsonify([{
-        'id': row[0],
-        'name': f"{row[1]} {row[2]}",
-        'average_grade': row[3]
-    } for row in results])
-
-
-@app.route('/courses/<int:course_id>/tasks/<int:task_id>/answers', methods=['POST'])
-def submit_task_answer(course_id, task_id):
-    data = request.json
-    new_answer = AssignmentAnswer(
-        assignment_id=task_id,
-        student_id=data['student_id'],
-        description=data['description'],
-        grade=None  
-    )
-
-    db.session.add(new_answer)
-    db.session.commit()
-    return jsonify({'message': 'Answer submitted successfully'}), 201
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
+const PORT = 3000;
+app.listen(PORT, () => {
+  console.log(`Сервер працює на порту ${PORT}`);
+});
