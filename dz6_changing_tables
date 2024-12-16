@@ -1,21 +1,21 @@
 ALTER TABLE Users
-ADD COLUMN phone_number VARCHAR(15);  
+ADD PhoneNumber VARCHAR(20);
 
 ALTER TABLE Users
-DROP COLUMN dog_name; 
+DROP COLUMN DogName;
 
-CREATE TABLE Grade_Assignment (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    response_id INT NOT NULL,         
-    grade INT NOT NULL,                
-    date DATE NOT NULL,               
-    teacher_id INT NOT NULL,           
-    FOREIGN KEY (response_id) REFERENCES Assignment_Responses(id), 
-    FOREIGN KEY (teacher_id) REFERENCES Users(id)                     
+CREATE TABLE Homework_Grades (
+    Id INT PRIMARY KEY AUTO_INCREMENT,       
+    HomeworkAnswerId INT NOT NULL,       
+    GradeDate DATE NOT NULL,                 
+    Grade INT NOT NULL,                     
+    TeacherId INT NOT NULL,                 
+    FOREIGN KEY (HomeworkAnswerId) REFERENCES Homework_Answers(Id), 
+    FOREIGN KEY (TeacherId) REFERENCES Users(Id) 
 );
 
-ALTER TABLE Assignments
-ADD COLUMN deadline DATE NOT NULL; 
+ALTER TABLE Homework
+ADD Deadline DATE;
 
-ALTER TABLE Assignment_Responses
-ADD COLUMN submission_date DATE; 
+ALTER TABLE Homework_Answers
+ADD SubmissionDate DATE;
