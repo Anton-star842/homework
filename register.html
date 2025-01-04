@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            color: white;
+            background: linear-gradient(to right, #1a1a1a, #333333);
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            padding: 15px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.7);
+            text-align: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        nav a:hover {
+            color: #f39c12;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 3em;
+            text-shadow: 3px 3px 7px rgba(0, 0, 0, 0.7);
+        }
+
+        .form-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin-top: 40px;
+            padding: 20px;
+        }
+
+        form {
+            background: #1f1f1f;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            width: 300px;
+        }
+
+        form input {
+            margin: 10px 0;
+            padding: 12px;
+            width: 100%;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: #2a2a2a;
+            color: white;
+            font-size: 1em;
+            box-sizing: border-box; 
+        }
+
+        form button {
+            padding: 12px;
+            width: 100%;
+            background-color: #f39c12;
+            border: none;
+            color: black;
+            font-weight: bold;
+            font-size: 1.1em;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        form button:hover {
+            background-color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="index.html">Home</a>
+            <a href="register.html">Register</a>
+            <a href="users.html">Users</a>
+            <a href="create_course.html">Create Course</a>
+        </nav>
+    </header>
+    <h1>Register</h1>
+
+    <div class="form-container">
+        <form action="{{ url_for('register') }}" method="POST">
+            <input type="text" name="username" placeholder="Username" required><br>
+            <input type="email" name="email" placeholder="Email" required><br>
+            <input type="password" name="password" placeholder="Password" required><br>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</body>
+</html>
