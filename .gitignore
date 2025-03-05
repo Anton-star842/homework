@@ -1,0 +1,19 @@
+# Ігноруємо базу даних
+db.sqlite3
+db_backup.sqlite3
+
+# Ігноруємо тимчасові файли Celery
+celerybeat-schedule*
+dump.rdb
+
+# Логи
+logs/
+staticfiles/
+
+# Node.js
+node_modules/
+package-lock.json
+
+# Docker файли (якщо вони не потрібні в репо)
+docker-prod.yml
+docker-compose.yml
