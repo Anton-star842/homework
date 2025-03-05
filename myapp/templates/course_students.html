@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Студенти курсу</title>
+</head>
+<body>
+    <h2>Студенти курсу {{ course.title }}</h2>
+    <ul>
+        {% for student in students %}
+            <li>{{ student.user.username }} - Сума балів: {{ student.total_score }}</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

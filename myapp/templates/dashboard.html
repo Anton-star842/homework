@@ -1,0 +1,13 @@
+<h1>Панель студента</h1>
+<h2>Ваші курси:</h2>
+<ul>
+    {% for course in courses %}
+        <li>{{ course.name }} - Рейтинг: {{ course.rating }}</li>
+    {% endfor %}
+</ul>
+<h2>Ваші подані домашні завдання:</h2>
+<ul>
+    {% for submission in submissions %}
+        <li>{{ submission.assignment.title }} - Оцінка: {{ submission.grade }}</li>
+    {% endfor %}
+</ul>

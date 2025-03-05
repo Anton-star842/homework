@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Студенти курсу {{ course.name }}</title>
+</head>
+<body>
+    <h1>Студенти курсу: {{ course.name }}</h1>
+
+    <!-- Форма фільтрації -->
+    <form method="get">
+        {{ filter.form.as_p }}
+        <button type="submit">Фільтрувати</button>
+    </form>
+
+    <!-- Форма для сортування студентів за балами -->
+    <form method="get">
+        <label for="sort">Сортування за балами:</label>
+        <select name="order_by">
+            <option value="points" {% if filter.form.order_by.value == 'points' %}selected{% endif %}>Зростання</option>
+            <option value="-points" {% if filter.form.order_by.value == '-points' %}selected{% endif %}>Спадання</option>
+        </select>
+        <button type="submit">Застосувати сортування</button>
+    </form>
+
+    <ul>
+        {% for student in filter.qs %}
+            <li>
+                {{ student.user.username }} – Бали: {{ student.points }}
+            </li>
+        {% empty %}
+            <li>Немає студентів за заданими критеріями.</li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'course_list' %}">Назад до курсів</a>
+</body>
+</html>

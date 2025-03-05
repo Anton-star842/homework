@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Ваші курси</title>
+</head>
+<body>
+    <h2>Ваші курси та рейтинг</h2>
+    <ul>
+        {% for course in courses %}
+            <li>
+                {{ course.name }} - Рейтинг:
+                {% for rating in ratings %}
+                    {% if rating.course == course %}
+                        {{ rating.grade }}
+                    {% endif %}
+                {% endfor %}
+            </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
