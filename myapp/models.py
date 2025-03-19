@@ -1,8 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.db import models
 from django.utils import timezone
-from django.utils.timezone import now
 
 
 class CustomUserManager(BaseUserManager):
@@ -25,13 +24,13 @@ class CustomUserManager(BaseUserManager):
 
 class CustomUser(AbstractUser):
     ROLE_CHOICES = (
-        ('student', 'Student'),
-        ('teacher', 'Teacher'),
-        ('admin', 'Admin'),
+        ("student", "Student"),
+        ("teacher", "Teacher"),
+        ("admin", "Admin"),
     )
     email = models.EmailField(unique=True)
-    full_name = models.CharField(max_length=255, default='Anonymous')
-    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default='student')
+    full_name = models.CharField(max_length=255, default="Anonymous")
+    role = models.CharField(max_length=10, choices=ROLE_CHOICES, default="student")
 
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]
@@ -43,7 +42,9 @@ class CustomUser(AbstractUser):
 
 
 class Teacher(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, related_name="teacher_profile")
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, related_name="teacher_profile"
+    )
     bio = models.TextField()
 
     def __str__(self):
@@ -64,10 +65,12 @@ class Course(models.Model):
 
 
 class Student(models.Model):
-    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE, null=True, blank=True, default=None)
+    user = models.OneToOneField(
+        CustomUser, on_delete=models.CASCADE, null=True, blank=True, default=None
+    )
     course = models.ForeignKey(Course, on_delete=models.CASCADE, default=1)
     total_score = models.IntegerField(default=0)
-    full_name = models.CharField(max_length=100, default='Anonymous')
+    full_name = models.CharField(max_length=100, default="Anonymous")
 
     def __str__(self):
         return self.user.username if self.user else "No User"
@@ -84,11 +87,11 @@ class Lesson(models.Model):
 class Homework(models.Model):
     content = models.TextField(verbose_name="Контент", default="")
     created_at = models.DateTimeField(default=timezone.now)
-    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, default=1)
+    lesson = models.ForeignKey("Lesson", on_delete=models.CASCADE, default=1)
 
     class Meta:
-        verbose_name = 'Домашнє завдання'
-        verbose_name_plural = 'Домашні завдання'
+        verbose_name = "Домашнє завдання"
+        verbose_name_plural = "Домашні завдання"
 
     def __str__(self):
         return self.content
@@ -128,14 +131,16 @@ class StudentPerformance(models.Model):
 
 
 class Rating(models.Model):
-    student = models.ForeignKey('Student', on_delete=models.CASCADE, null=True, blank=True)
-    course = models.ForeignKey('Course', on_delete=models.CASCADE)
+    student = models.ForeignKey(
+        "Student", on_delete=models.CASCADE, null=True, blank=True
+    )
+    course = models.ForeignKey("Course", on_delete=models.CASCADE)
     value = models.IntegerField(verbose_name="Оцінка", default=0)
     created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
-        verbose_name = 'Оцінка'
-        verbose_name_plural = 'Оцінки'
+        verbose_name = "Оцінка"
+        verbose_name_plural = "Оцінки"
 
     def __str__(self):
         return f"Оцінка студента {self.student}"
@@ -144,7 +149,9 @@ class Rating(models.Model):
 class Assignment(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField(default="")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name="assignments")
+    course = models.ForeignKey(
+        Course, on_delete=models.CASCADE, related_name="assignments"
+    )
     due_date = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
@@ -161,8 +168,7 @@ class Submission(models.Model):
     submitted_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f'Submission for {self.assignment.title} by {self.student.username}'
-
+        return f"Submission for {self.assignment.title} by {self.student.username}"
 
 
 class Grade(models.Model):
@@ -172,21 +178,21 @@ class Grade(models.Model):
     date_assigned = models.DateField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('student', 'course')
+        unique_together = ("student", "course")
 
     def __str__(self):
-        return f'{self.student.user.username} - {self.course.name}: {self.grade}'
+        return f"{self.student.user.username} - {self.course.name}: {self.grade}"
 
     def get_grade_letter(self):
         if self.grade is not None:
             if self.grade >= 90:
-                return 'A'
+                return "A"
             elif self.grade >= 80:
-                return 'B'
+                return "B"
             elif self.grade >= 70:
-                return 'C'
+                return "C"
             elif self.grade >= 60:
-                return 'D'
+                return "D"
             else:
-                return 'F'
-        return 'N/A'
+                return "F"
+        return "N/A"

@@ -17,3 +17,10 @@ package-lock.json
 # Docker файли (якщо вони не потрібні в репо)
 docker-prod.yml
 docker-compose.yml
+
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.db
+*.log

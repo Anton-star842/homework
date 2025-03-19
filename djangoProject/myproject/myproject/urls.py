@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('myapp.urls')),  # Підключення URL-ів додатку myapp
+    path('courses/', include('courses.urls')),  # Додаємо маршрути для курсу
 ]

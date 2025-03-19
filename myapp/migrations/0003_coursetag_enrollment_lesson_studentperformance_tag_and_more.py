@@ -7,303 +7,416 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('myapp', '0002_homework_student_grade'),
+        ("myapp", "0002_homework_student_grade"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='CourseTag',
+            name="CourseTag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Enrollment',
+            name="Enrollment",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('enrollment_date', models.DateField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("enrollment_date", models.DateField()),
             ],
         ),
         migrations.CreateModel(
-            name='Lesson',
+            name="Lesson",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('title', models.CharField(max_length=255)),
-                ('description', models.TextField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("title", models.CharField(max_length=255)),
+                ("description", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='StudentPerformance',
+            name="StudentPerformance",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('score', models.IntegerField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("score", models.IntegerField()),
             ],
         ),
         migrations.CreateModel(
-            name='Tag',
+            name="Tag",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=50, unique=True)),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=50, unique=True)),
             ],
         ),
         migrations.CreateModel(
-            name='Teacher',
+            name="Teacher",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('bio', models.TextField()),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("bio", models.TextField()),
             ],
         ),
         migrations.DeleteModel(
-            name='YourModel',
+            name="YourModel",
         ),
         migrations.AlterModelOptions(
-            name='homework',
-            options={'verbose_name': 'Домашнє завдання', 'verbose_name_plural': 'Домашні завдання'},
+            name="homework",
+            options={
+                "verbose_name": "Домашнє завдання",
+                "verbose_name_plural": "Домашні завдання",
+            },
         ),
         migrations.AlterModelOptions(
-            name='rating',
-            options={'verbose_name': 'Оцінка', 'verbose_name_plural': 'Оцінки'},
+            name="rating",
+            options={"verbose_name": "Оцінка", "verbose_name_plural": "Оцінки"},
         ),
         migrations.AlterModelManagers(
-            name='customuser',
-            managers=[
-            ],
+            name="customuser",
+            managers=[],
         ),
         migrations.RenameField(
-            model_name='submission',
-            old_name='submitted_at',
-            new_name='created_at',
+            model_name="submission",
+            old_name="submitted_at",
+            new_name="created_at",
         ),
         migrations.RemoveField(
-            model_name='assignment',
-            name='created_at',
+            model_name="assignment",
+            name="created_at",
         ),
         migrations.AlterUniqueTogether(
-            name='grade',
-            unique_together={('student', 'course')},
+            name="grade",
+            unique_together={("student", "course")},
         ),
         migrations.RemoveField(
-            model_name='homework',
-            name='description',
+            model_name="homework",
+            name="description",
         ),
         migrations.RemoveField(
-            model_name='homework',
-            name='due_date',
+            model_name="homework",
+            name="due_date",
         ),
         migrations.RemoveField(
-            model_name='homework',
-            name='title',
+            model_name="homework",
+            name="title",
         ),
         migrations.RemoveField(
-            model_name='rating',
-            name='comment',
+            model_name="rating",
+            name="comment",
         ),
         migrations.RemoveField(
-            model_name='rating',
-            name='rating',
+            model_name="rating",
+            name="rating",
         ),
         migrations.RemoveField(
-            model_name='rating',
-            name='user',
+            model_name="rating",
+            name="user",
         ),
         migrations.RemoveField(
-            model_name='student',
-            name='first_name',
+            model_name="student",
+            name="first_name",
         ),
         migrations.RemoveField(
-            model_name='student',
-            name='last_name',
+            model_name="student",
+            name="last_name",
         ),
         migrations.AddField(
-            model_name='course',
-            name='name',
-            field=models.CharField(default='Без назви', max_length=255),
+            model_name="course",
+            name="name",
+            field=models.CharField(default="Без назви", max_length=255),
         ),
         migrations.AddField(
-            model_name='course',
-            name='students',
-            field=models.ManyToManyField(related_name='courses', to=settings.AUTH_USER_MODEL),
+            model_name="course",
+            name="students",
+            field=models.ManyToManyField(
+                related_name="courses", to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='customuser',
-            name='full_name',
-            field=models.CharField(default='Anonymous', max_length=255),
+            model_name="customuser",
+            name="full_name",
+            field=models.CharField(default="Anonymous", max_length=255),
         ),
         migrations.AddField(
-            model_name='customuser',
-            name='role',
-            field=models.CharField(choices=[('student', 'Student'), ('teacher', 'Teacher'), ('admin', 'Admin')], default='student', max_length=10),
+            model_name="customuser",
+            name="role",
+            field=models.CharField(
+                choices=[
+                    ("student", "Student"),
+                    ("teacher", "Teacher"),
+                    ("admin", "Admin"),
+                ],
+                default="student",
+                max_length=10,
+            ),
         ),
         migrations.AddField(
-            model_name='grade',
-            name='date_assigned',
-            field=models.DateField(auto_now_add=True, default=django.utils.timezone.now),
+            model_name="grade",
+            name="date_assigned",
+            field=models.DateField(
+                auto_now_add=True, default=django.utils.timezone.now
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='grade',
-            name='grade',
-            field=models.DecimalField(blank=True, decimal_places=2, max_digits=5, null=True),
+            model_name="grade",
+            name="grade",
+            field=models.DecimalField(
+                blank=True, decimal_places=2, max_digits=5, null=True
+            ),
         ),
         migrations.AddField(
-            model_name='homework',
-            name='content',
-            field=models.TextField(default='', verbose_name='Контент'),
+            model_name="homework",
+            name="content",
+            field=models.TextField(default="", verbose_name="Контент"),
         ),
         migrations.AddField(
-            model_name='homework',
-            name='created_at',
+            model_name="homework",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='rating',
-            name='created_at',
+            model_name="rating",
+            name="created_at",
             field=models.DateTimeField(default=django.utils.timezone.now),
         ),
         migrations.AddField(
-            model_name='rating',
-            name='student',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='myapp.student'),
+            model_name="rating",
+            name="student",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="myapp.student",
+            ),
         ),
         migrations.AddField(
-            model_name='rating',
-            name='value',
-            field=models.IntegerField(default=0, verbose_name='Оцінка'),
+            model_name="rating",
+            name="value",
+            field=models.IntegerField(default=0, verbose_name="Оцінка"),
         ),
         migrations.AddField(
-            model_name='student',
-            name='course',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='myapp.course'),
+            model_name="student",
+            name="course",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="myapp.course",
+            ),
         ),
         migrations.AddField(
-            model_name='student',
-            name='full_name',
-            field=models.CharField(default='Anonymous', max_length=100),
+            model_name="student",
+            name="full_name",
+            field=models.CharField(default="Anonymous", max_length=100),
         ),
         migrations.AddField(
-            model_name='student',
-            name='total_score',
+            model_name="student",
+            name="total_score",
             field=models.IntegerField(default=0),
         ),
         migrations.AddField(
-            model_name='student',
-            name='user',
-            field=models.OneToOneField(blank=True, default=None, null=True, on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="student",
+            name="user",
+            field=models.OneToOneField(
+                blank=True,
+                default=None,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to=settings.AUTH_USER_MODEL,
+            ),
         ),
         migrations.AddField(
-            model_name='submission',
-            name='content',
-            field=models.TextField(default=''),
+            model_name="submission",
+            name="content",
+            field=models.TextField(default=""),
         ),
         migrations.AddField(
-            model_name='submission',
-            name='feedback',
+            model_name="submission",
+            name="feedback",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='assignment',
-            name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='assignments', to='myapp.course'),
+            model_name="assignment",
+            name="course",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="assignments",
+                to="myapp.course",
+            ),
         ),
         migrations.AlterField(
-            model_name='assignment',
-            name='description',
-            field=models.TextField(default=''),
+            model_name="assignment",
+            name="description",
+            field=models.TextField(default=""),
         ),
         migrations.AlterField(
-            model_name='assignment',
-            name='due_date',
+            model_name="assignment",
+            name="due_date",
             field=models.DateTimeField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='description',
+            model_name="course",
+            name="description",
             field=models.TextField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='end_date',
+            model_name="course",
+            name="end_date",
             field=models.DateTimeField(),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='start_date',
+            model_name="course",
+            name="start_date",
             field=models.DateTimeField(),
         ),
         migrations.AlterField(
-            model_name='course',
-            name='title',
+            model_name="course",
+            name="title",
             field=models.CharField(max_length=100),
         ),
         migrations.AlterField(
-            model_name='customuser',
-            name='email',
+            model_name="customuser",
+            name="email",
             field=models.EmailField(max_length=254, unique=True),
         ),
         migrations.AlterField(
-            model_name='submission',
-            name='assignment',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.assignment'),
+            model_name="submission",
+            name="assignment",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.assignment"
+            ),
         ),
         migrations.AlterField(
-            model_name='submission',
-            name='grade',
+            model_name="submission",
+            name="grade",
             field=models.IntegerField(blank=True, null=True),
         ),
         migrations.AlterField(
-            model_name='submission',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.student'),
+            model_name="submission",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.student"
+            ),
         ),
         migrations.AddField(
-            model_name='coursetag',
-            name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='tags', to='myapp.course'),
+            model_name="coursetag",
+            name="course",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="tags",
+                to="myapp.course",
+            ),
         ),
         migrations.AddField(
-            model_name='enrollment',
-            name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.course'),
+            model_name="enrollment",
+            name="course",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.course"
+            ),
         ),
         migrations.AddField(
-            model_name='enrollment',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.student'),
+            model_name="enrollment",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.student"
+            ),
         ),
         migrations.AddField(
-            model_name='homework',
-            name='lesson',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='myapp.lesson'),
+            model_name="homework",
+            name="lesson",
+            field=models.ForeignKey(
+                default=1,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="myapp.lesson",
+            ),
         ),
         migrations.AddField(
-            model_name='studentperformance',
-            name='course',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.course'),
+            model_name="studentperformance",
+            name="course",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.course"
+            ),
         ),
         migrations.AddField(
-            model_name='studentperformance',
-            name='student',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='myapp.student'),
+            model_name="studentperformance",
+            name="student",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to="myapp.student"
+            ),
         ),
         migrations.AddField(
-            model_name='coursetag',
-            name='tag',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='courses', to='myapp.tag'),
+            model_name="coursetag",
+            name="tag",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="courses",
+                to="myapp.tag",
+            ),
         ),
         migrations.AddField(
-            model_name='teacher',
-            name='user',
-            field=models.OneToOneField(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL),
+            model_name="teacher",
+            name="user",
+            field=models.OneToOneField(
+                on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
         ),
         migrations.AddField(
-            model_name='course',
-            name='teacher',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='myapp.teacher'),
+            model_name="course",
+            name="teacher",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="myapp.teacher",
+            ),
         ),
         migrations.RemoveField(
-            model_name='grade',
-            name='value',
+            model_name="grade",
+            name="value",
         ),
     ]

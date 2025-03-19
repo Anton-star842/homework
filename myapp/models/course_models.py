@@ -1,7 +1,7 @@
 # myapp/models/course_models.py
 
-from django.db import models
 from django.contrib.auth import get_user_model
+from django.db import models
 
 User = get_user_model()
 
@@ -9,7 +9,13 @@ User = get_user_model()
 class Course(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    teacher = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name="courses_taught")
+    teacher = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="courses_taught",
+    )
     students = models.ManyToManyField(User, related_name="courses_enrolled")
 
     def __str__(self):
@@ -26,7 +32,9 @@ class Lesson(models.Model):
 
 
 class Assignment(models.Model):
-    lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, related_name="assignments")
+    lesson = models.ForeignKey(
+        Lesson, on_delete=models.CASCADE, related_name="assignments"
+    )
     title = models.CharField(max_length=255)
     description = models.TextField()
 
