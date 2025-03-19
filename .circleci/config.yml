@@ -3,29 +3,31 @@
 version: 2.1
 
 # Define a job to be invoked later in a workflow.
-# See: https://circleci.com/docs/jobs-steps/#jobs-overview & https://circleci.com/docs/configuration-reference/#jobs
+# This job will install pre-commit and run pre-commit hooks.
 jobs:
-  say-hello:
-    # Specify the execution environment. You can specify an image from Docker Hub or use one of our convenience images from CircleCI's Developer Hub.
-    # See: https://circleci.com/docs/executor-intro/ & https://circleci.com/docs/configuration-reference/#executor-job
+  pre-commit:
     docker:
-      # Specify the version you desire here
-      # See: https://circleci.com/developer/images/image/cimg/base
-      - image: cimg/base:current
+      - image: cimg/python:3.8  # Docker image with Python 3.8, which is suitable for pre-commit hooks.
 
-    # Add steps to the job
-    # See: https://circleci.com/docs/jobs-steps/#steps-overview & https://circleci.com/docs/configuration-reference/#steps
     steps:
-      # Checkout the code as the first step.
-      - checkout
+      - checkout  # Step to check out the code from the repository.
+
+      # Step to install pre-commit
       - run:
-          name: "Say hello"
-          command: "echo Hello, World!"
+          name: Install pre-commit
+          command: |
+            python -m pip install --upgrade pip
+            pip install pre-commit
+            pre-commit install  # Install pre-commit hooks
+
+      # Step to run pre-commit hooks on all files
+      - run:
+          name: Run pre-commit hooks
+          command: pre-commit run --all-files  # Run pre-commit on all files in the repo.
 
 # Orchestrate jobs using workflows
-# See: https://circleci.com/docs/workflows/ & https://circleci.com/docs/configuration-reference/#workflows
 workflows:
-  say-hello-workflow: # This is the name of the workflow, feel free to change it to better match your workflow.
-    # Inside the workflow, you define the jobs you want to run.
+  version: 2
+  pre-commit-workflow:  # Workflow name
     jobs:
-      - say-hello
+      - pre-commit  # The job to run in the workflow.
